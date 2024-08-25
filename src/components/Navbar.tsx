@@ -2,6 +2,8 @@ import Image from 'next/image'
 import React from 'react'
 import SearchInput from './SearchInput'
 import NavItems from './NavItems'
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
+import { Button } from './ui/button'
 
 const Navbar = () => {
     return (
@@ -22,7 +24,7 @@ const Navbar = () => {
                     <div className='md:block hidden'>
                         <NavItems />
                     </div>
-                    {/* <div>
+                    <div>
                         <SignedIn>
                             <UserButton />
                         </SignedIn>
@@ -31,7 +33,7 @@ const Navbar = () => {
                                 <SignInButton />
                             </Button>
                         </SignedOut>
-                    </div> */}
+                    </div>
                 </div>
             </div>
         </div>
