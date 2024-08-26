@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { Input } from './ui/input'
 import ProfilePhoto from './shared/ProfilePhoto'
-import PostDialog from './PostDialog'
+import { PostDialog } from './PostDialog'
 
 const PostInput = ({ user }: { user: any }) => {
 
