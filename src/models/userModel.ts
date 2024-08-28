@@ -1,19 +1,16 @@
 import mongoose, { Document, Model } from "mongoose";
-
-export interface User {
+export interface IUser {
     firstName: string,
     lastName: string,
     userId: string,
-    profilePhoto?: string,
+    profilePhoto?: string, // ?: means optional entry
     bio?: string
 }
-
-export interface UserDocument extends User, Document {
+export interface IUserDocument extends IUser, Document {
     createdAt: Date,
     updatedAt: Date
 }
-
-const userSchema = new mongoose.Schema<UserDocument>({
+const userSchema = new mongoose.Schema<IUserDocument>({
     firstName: {
         type: String,
         required: true
@@ -35,6 +32,5 @@ const userSchema = new mongoose.Schema<UserDocument>({
         type: String,
         default: ""
     }
-}, { timestamps: true })
-
-export const User: Model<UserDocument> = mongoose.models.User || mongoose.model("User", userSchema)
+}, { timestamps: true });
+export const User: Model<IUserDocument> = mongoose.models?.User || mongoose.model<IUserDocument>("User", userSchema);
