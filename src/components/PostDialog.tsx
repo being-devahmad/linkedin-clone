@@ -7,11 +7,12 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import ProfilePhoto from "./shared/ProfilePhoto"
-import { useRef, useState } from "react"
-import Image from "next/image"
 import { Textarea } from "./ui/textarea"
 import { Images } from "lucide-react"
-import { readFileAsDataUrl } from "@/lib/utils"
+import { useRef, useState } from "react"
+import { readFileAsDataUrl } from "@/lib/utils/utils"
+import Image from "next/image"
+import { createPostAction } from "@/lib/actions/post"
 
 export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean, src: string }) {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -28,17 +29,17 @@ export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean
             const dataUrl = await readFileAsDataUrl(file);
             setSelectedFile(dataUrl);
         }
-
     }
     const postActionHandler = async (formData: FormData) => {
         const inputText = formData.get('inputText') as string;
         try {
-            // await createPostAction(inputText, selectedFile);
+            await createPostAction(inputText, selectedFile);
+            console.log("input----->>", inputText)
         } catch (error) {
             console.log('error occurred', error);
         }
-        setInputText("");
-        setOpen(false);
+        // setInputText("");
+        // setOpen(false);
     }
 
     return (
@@ -53,9 +54,7 @@ export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean
                         </div>
                     </DialogTitle>
                 </DialogHeader>
-                <form action={(formData) => {
-                    const promise = postActionHandler(formData);
-                }}>
+                <form action={postActionHandler}>
                     <div className="flex flex-col">
                         <Textarea
                             id="name"
@@ -85,7 +84,7 @@ export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean
                         </div>
                     </DialogFooter>
                 </form>
-                <Button className="gap-2" onClick={() => inputRef?.current?.click()} variant={'secondary'}>
+                <Button className="gap-2" onClick={() => inputRef?.current?.click()} variant={'ghost'}>
                     <Images className="text-blue-500" />
                     <p>Media</p>
                 </Button>

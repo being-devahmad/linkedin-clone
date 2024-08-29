@@ -2,7 +2,7 @@ import mongoose, { Connection } from "mongoose"
 
 let isConnected: Connection | boolean = false
 
-const dbConnect = async () => {
+export const dbConnect = async () => {
     if (isConnected) {
         console.log("Database already connected....")
         return isConnected
