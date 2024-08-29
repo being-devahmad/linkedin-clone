@@ -46,7 +46,6 @@ export const createPostAction = async (inputText: string, selectedFile: string |
                 description: inputText,
                 user: userDatabase
             });
-            console.log('post->>>>' , post)
 
             await post.save()
 

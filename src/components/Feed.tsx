@@ -5,6 +5,8 @@ import Posts from './Posts'
 const Feed = ({ user }: { user: any }) => {
 
     const userData = JSON.parse(JSON.stringify(user))
+    console.log("user-->>>" , user)
+    console.log("userData-->" , userData)
 
     return (
         <div className='flex-1'>

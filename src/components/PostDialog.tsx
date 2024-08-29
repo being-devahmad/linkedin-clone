@@ -1,5 +1,3 @@
-'use client'
-
 import {Button} from "@/components/ui/button";
 import {
     Dialog,
@@ -39,6 +37,7 @@ export function PostDialog({setOpen, open, src}: { setOpen: any, open: boolean, 
         try {
             await createPostAction(inputText, selectedFile);
             setOpen(false);
+            setInputText('')
         } catch (error) {
             console.error('Error occurred:', error);
         }
