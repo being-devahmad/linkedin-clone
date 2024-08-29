@@ -3,6 +3,8 @@ import {Button} from './ui/button'
 import {MessageCircleMore, Repeat, Send, ThumbsUp} from 'lucide-react'
 import {IPostDocument} from "@/lib/models/postModel";
 import {useUser} from "@clerk/nextjs";
+import CommentInput from "@/components/CommentInput";
+import Comments from "@/components/Comments";
 
 
 const SocialOptions = ({post}: { post: IPostDocument }) => {
@@ -58,12 +60,16 @@ const SocialOptions = ({post}: { post: IPostDocument }) => {
                         <p className='text-xm text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer'>
                             {likes.length}
                             like
-                        </p>)
-                }
-                {/*{*/}
-                {/*    (post.comments && post.comments.length > 0) && (<p onClick={() => setCommentOpen(!commentOpen)}*/}
-                {/*                                                       className='text-xm text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer'>{post.comments.length} message</p>)*/}
-                {/*}*/}
+                        </p>
+                    )}
+
+                {
+                    (post.comments && post.comments.length > 0) && (
+                        <p onClick={() => setCommentBoxOpen(!commentBoxOpen)}
+                           className='text-xm text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer'>
+                            {post.comments.length} message
+                        </p>
+                    )}
             </div>
             <div className='flex items-center m-1 justify-between'>
                 <Button
@@ -76,6 +82,7 @@ const SocialOptions = ({post}: { post: IPostDocument }) => {
                     <p className={` ${liked && 'text-[#378FE9]'}`}>Like</p>
                 </Button>
                 <Button
+                    onClick={() => setCommentBoxOpen(!commentBoxOpen)}
                     variant={'ghost'}
                     className='flex items-center gap-1 rounded-lg text-gray-600 hover:text-black'>
                     <MessageCircleMore/>
@@ -90,14 +97,14 @@ const SocialOptions = ({post}: { post: IPostDocument }) => {
                     <p>Send</p>
                 </Button>
             </div>
-            {/*{*/}
-            {/*    commentOpen && (*/}
-            {/*        <div className='p-4'>*/}
-            {/*            <CommentInput postId={post._id}/>*/}
-            {/*            <Comments post={post}/>*/}
-            {/*        </div>*/}
-            {/*    )*/}
-            {/*}*/}
+            {
+                commentBoxOpen && (
+                    <div className='p-4'>
+                        <CommentInput postId={post?._id}/>
+                        <Comments post={post}/>
+                    </div>
+                )
+            }
         </div>
     )
 }
