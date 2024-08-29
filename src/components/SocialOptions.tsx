@@ -100,6 +100,8 @@ const SocialOptions = ({post}: { post: IPostDocument }) => {
             {
                 commentBoxOpen && (
                     <div className='p-4'>
+                        comment kr bhai
+
                         <CommentInput postId={post?._id}/>
                         <Comments post={post}/>
                     </div>
