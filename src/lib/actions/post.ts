@@ -8,49 +8,43 @@ import {Post} from "../models/postModel";
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUD_KEY,
-    api_secret: process.env.CLOUD_SECRET
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
 });
 
-export const createPostAction = async (inputText: string, selectedFile: string | null) => {
+export const createPostAction = async (inputText: string, selectedFile: string) => {
     await dbConnect();
     const user = await currentUser();
     if (!user) throw new Error('User not authenticated');
     if (!inputText) throw new Error('Input field is required');
+
+    const image = selectedFile;
+
 
     const userDatabase: IUser = {
         firstName: user.firstName || "Patel",
         lastName: user.lastName || "Mern Stack",
         userId: user.id,
         profilePhoto: user.imageUrl
-    };
-
+    }
     let uploadResponse;
     try {
-        if (selectedFile) {
-            // Upload the image to Cloudinary
-            uploadResponse = await cloudinary.uploader.upload(selectedFile);
-
-            const post = new Post({
+        if (image) {
+            //1. create post with image
+            uploadResponse = await cloudinary.uploader.upload(image);
+            await Post.create({
                 description: inputText,
                 user: userDatabase,
-                imageUrl: uploadResponse?.secure_url
-            });
-
-             await post.save()
-
-
+                imageUrl: uploadResponse?.secure_url // yha pr image url aay ga from cloudinary
+            })
         } else {
-            // Create post with text only
-            const post = new Post({
+            //2. create post with text only
+            await Post.create({
                 description: inputText,
                 user: userDatabase
-            });
-
-            await post.save()
-
+            })
         }
     } catch (error: any) {
-        throw new Error(error.message);
+        throw new Error(error);
     }
-};
+}
