@@ -6,12 +6,8 @@ import {Badge, Trash2} from 'lucide-react'
 import {IPostDocument} from "@/lib/models/postModel";
 import ProfilePhoto from "@/components/shared/ProfilePhoto";
 import {PostContent} from "@/components/PostContent";
-// import { Badge } from './ui/badge'
-// import { IPostDocument } from '@/models/post.model'
-// import PostContent from './PostContent'
-// import SocialOptions from './SocialOptions'
-// import ReactTimeago from "react-timeago";
-// import { deletePostAction } from '@/lib/serveractions'
+import {deletePostAction} from "@/lib/actions/post";
+import ReactTimeAgo from 'react-timeago'
 
 const Post = ({post}: { post: IPostDocument }) => {
     const {user} = useUser();
@@ -29,7 +25,7 @@ const Post = ({post}: { post: IPostDocument }) => {
                         <p className='text-xs text-gray-500'>@{user ? user?.username : "username"}</p>
 
                         <p className='text-xs text-gray-500'>1hr ago
-                            {/*<ReactTimeaago date={new Date(post.createdAt)} />*/}
+                            <ReactTimeAgo date={new Date(post.createdAt)} />
                         </p>
                     </div>
                 </div>
@@ -37,9 +33,9 @@ const Post = ({post}: { post: IPostDocument }) => {
                     {
                         loggedInUser && (
                             <Button
-                            //     onClick={() => {
-                            //     const res = deletePostAction(post._id);
-                            // }}
+                                onClick={() => {
+                                    const res = deletePostAction(post._id);
+                                }}
                                 size={'icon'} className='rounded-full' variant={'outline'}>
                                 <Trash2/>
                             </Button>

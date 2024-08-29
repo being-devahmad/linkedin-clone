@@ -10,7 +10,7 @@ const Posts = ({posts}: { posts: IPostDocument[] }) => {
                 posts?.map((post) => {
                     return (
                         <>
-                            <Post post={post} key={post._id }/>
+                            <Post post={post} />
                         </>
                     )
                 })
