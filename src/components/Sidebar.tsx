@@ -1,8 +1,12 @@
 import Image from 'next/image'
 import React from 'react'
 import ProfilePhoto from './shared/ProfilePhoto'
+import {getAllPosts} from "@/lib/actions/post";
 
-const Sidebar = ({ user }: { user: any }) => {
+const Sidebar = async ({user}: { user: any }) => {
+
+    const posts = await getAllPosts()
+
     return (
         <>
             <div className='hidden md:block w-[20%] h-fit border bordergray-300 bg-white rounded-lg'>
@@ -21,7 +25,7 @@ const Sidebar = ({ user }: { user: any }) => {
                         }
                     </div>
                     <div className='my-1 absolute top-10 left-[40%]'>
-                        <ProfilePhoto src={user ? user?.imageUrl! : "/banner.jpg"} />
+                        <ProfilePhoto src={user ? user?.imageUrl! : "/banner.jpg"}/>
                     </div>
                     <div className='border-b border-b-gray-300'>
                         <div className='p-2 mt-5 text-center'>
@@ -31,13 +35,15 @@ const Sidebar = ({ user }: { user: any }) => {
                     </div>
                 </div>
                 <div className='text-xs'>
-                    <div className='w-full flex justify-between items-center px-3 py-2 hover:bg-gray-200 cursor-pointer'>
+                    <div
+                        className='w-full flex justify-between items-center px-3 py-2 hover:bg-gray-200 cursor-pointer'>
                         <p>Post Impression</p>
                         <p className='text-blue-500 font-bold'>88</p>
                     </div>
-                    <div className='w-full flex justify-between items-center px-3 py-2 hover:bg-gray-200 cursor-pointer'>
+                    <div
+                        className='w-full flex justify-between items-center px-3 py-2 hover:bg-gray-200 cursor-pointer'>
                         <p>Posts</p>
-                        {/* <p className='text-blue-500 font-bold'>{posts.length}</p> */}
+                        <p className='text-blue-500 font-bold'>{posts.length}</p>
                     </div>
                 </div>
             </div>

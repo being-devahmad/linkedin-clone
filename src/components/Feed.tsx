@@ -7,6 +7,7 @@ const Feed = async ({user}: { user: any }) => {
 
     const userData = JSON.parse(JSON.stringify(user))
     const posts = await getAllPosts()
+    console.log("allPostsByMe-->", posts)
 
     return (
         <div className='flex-1'>

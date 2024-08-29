@@ -1,18 +1,23 @@
 "use client"
+
 import React from 'react'
+import ProfilePhoto from './shared/ProfilePhoto'
 import {useUser} from '@clerk/nextjs'
 import {Button} from './ui/button'
-import {Badge, Trash2} from 'lucide-react'
+import {Trash2} from 'lucide-react'
+import {Badge} from './ui/badge'
 import {IPostDocument} from "@/lib/models/postModel";
-import ProfilePhoto from "@/components/shared/ProfilePhoto";
-import {PostContent} from "@/components/PostContent";
+import ReactTimeago from "react-timeago";
 import {deletePostAction} from "@/lib/actions/post";
-import ReactTimeAgo from 'react-timeago'
+import {PostContent} from "@/components/PostContent";
+import SocialOptions from "@/components/SocialOptions";
 
 const Post = ({post}: { post: IPostDocument }) => {
     const {user} = useUser();
     const fullName = post?.user?.firstName + " " + post?.user?.lastName;
+    const username = user?.primaryEmailAddress?.emailAddress
     const loggedInUser = user?.id === post?.user?.userId;
+    console.log("loggedInUser-->", loggedInUser)
 
     return (
         <div className='bg-white my-2 mx-2 md:mx-0 rounded-lg border border-gray-300'>
@@ -21,22 +26,25 @@ const Post = ({post}: { post: IPostDocument }) => {
                 <div className='flex items-center justify-between w-full'>
                     <div>
                         <h1 className='text-sm font-bold'>{fullName}
-                            <Badge className='ml-2'>You</Badge></h1>
-                        <p className='text-xs text-gray-500'>@{user ? user?.username : "username"}</p>
+                            <Badge variant={'secondary'} className='ml-2'>
+                                You
+                            </Badge>
+                        </h1>
+                        <p className='text-xs text-gray-500'>@{user ?
+                            username?.split("@").shift() :
+                            "someone@example.com"}</p>
 
-                        <p className='text-xs text-gray-500'>1hr ago
-                            <ReactTimeAgo date={new Date(post.createdAt)} />
+                        <p className='text-xs text-gray-500'>
+                            <ReactTimeago date={new Date(post.createdAt)}/>
                         </p>
                     </div>
                 </div>
                 <div>
                     {
                         loggedInUser && (
-                            <Button
-                                onClick={() => {
-                                    const res = deletePostAction(post._id);
-                                }}
-                                size={'icon'} className='rounded-full' variant={'outline'}>
+                            <Button onClick={() => {
+                                const res = deletePostAction(post._id);
+                            }} size={'icon'} className='rounded-full' variant={'outline'}>
                                 <Trash2/>
                             </Button>
                         )
@@ -44,7 +52,7 @@ const Post = ({post}: { post: IPostDocument }) => {
                 </div>
             </div>
             <PostContent post={post}/>
-            {/*<SocialOptions post={post}/>*/}
+            <SocialOptions post={post}/>
         </div>
     )
 }

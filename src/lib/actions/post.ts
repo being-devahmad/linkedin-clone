@@ -37,7 +37,7 @@ export const createPostAction = async (inputText: string, selectedFile: string |
             await Post.create({
                 description: inputText,
                 user: userDatabase,
-                imageUrl: uploadResponse?.secure_url // yha pr image url aay ga from cloudinary
+                imageUrl: uploadResponse?.secure_url // Her we'll pass the imageUrl from cloudinary
             })
         } else {
             //2. create post with text only
@@ -70,14 +70,15 @@ export const getAllPosts = async () => {
 
 
 // delete Post by id
-export const deletePostAction = async (postId: string) => {
+export const deletePostAction = async (postId: any) => {
     await dbConnect()
     const user = await currentUser();
+    console.log('thisUser>>>>', user)
     if (!user) throw new Error('User not authenticated.');
     const post = await Post.findById(postId);
     if (!post) throw new Error('Post not found.');
 
-    // logic to handle that user could delete it's own post only
+    // logic to handle that user could delete its own post only
     if (post.user.userId !== user.id) {
         throw new Error('You are not an owner of this Post.');
     }
