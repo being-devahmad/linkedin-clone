@@ -8,7 +8,7 @@ const Feed = ({ user }: { user: any }) => {
 
     return (
         <div className='flex-1'>
-            <PostInput user={user} />
+            <PostInput user={userData} />
             <Posts />
         </div>
     )

@@ -24,7 +24,6 @@ const PostInput = ({ user }: { user: any }) => {
                     onClick={inputHandler}
                 />
                 <PostDialog setOpen={setOpen} open={open} src={user?.imageUrl} />
-
             </div>
         </div>
     )

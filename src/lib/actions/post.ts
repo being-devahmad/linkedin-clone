@@ -1,54 +1,57 @@
 "use server"
 
-import { currentUser } from "@clerk/nextjs/server";
-import { dbConnect } from "../db/db";
-import { IUser } from "../models/userModel";
-import { v2 as cloudinary } from "cloudinary";
-import { Post } from "../models/postModel";
+import {currentUser} from "@clerk/nextjs/server";
+import {dbConnect} from "../db/db";
+import {IUser} from "../models/userModel";
+import {v2 as cloudinary} from "cloudinary";
+import {Post} from "../models/postModel";
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.CLOUD_KEY,
     api_secret: process.env.CLOUD_SECRET
-})
+});
 
-
-
-// creating post using server actions
-export const createPostAction = async (inputText: string, selectedFile: string) => {
+export const createPostAction = async (inputText: string, selectedFile: string | null) => {
     await dbConnect();
     const user = await currentUser();
-    if (!user) throw new Error('User not athenticated');
+    if (!user) throw new Error('User not authenticated');
     if (!inputText) throw new Error('Input field is required');
-
-    const image = selectedFile;
-
 
     const userDatabase: IUser = {
         firstName: user.firstName || "Patel",
         lastName: user.lastName || "Mern Stack",
         userId: user.id,
         profilePhoto: user.imageUrl
-    }
-    
+    };
+
     let uploadResponse;
     try {
-        if (image) {
-            //1. create post with image
-            uploadResponse = await cloudinary.uploader.upload(image);
-            await Post.create({
+        if (selectedFile) {
+            // Upload the image to Cloudinary
+            uploadResponse = await cloudinary.uploader.upload(selectedFile);
+
+            const post = new Post({
                 description: inputText,
                 user: userDatabase,
-                imageUrl: uploadResponse?.secure_url // yha pr image url ayega from cloudinary
-            })
+                imageUrl: uploadResponse?.secure_url
+            });
+
+             await post.save()
+
+
         } else {
-            //2. create post with text only
-            await Post.create({
+            // Create post with text only
+            const post = new Post({
                 description: inputText,
                 user: userDatabase
-            })
+            });
+            console.log('post->>>>' , post)
+
+            await post.save()
+
         }
     } catch (error: any) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
-}
+};
