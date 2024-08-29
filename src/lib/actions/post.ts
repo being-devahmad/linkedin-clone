@@ -5,6 +5,7 @@ import {dbConnect} from "../db/db";
 import {IUser} from "../models/userModel";
 import {v2 as cloudinary} from "cloudinary";
 import {Post} from "../models/postModel";
+import {revalidatePath} from "next/cache";
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -12,7 +13,8 @@ cloudinary.config({
     api_secret: process.env.CLOUD_API_SECRET
 });
 
-export const createPostAction = async (inputText: string, selectedFile: string) => {
+// create new post
+export const createPostAction = async (inputText: string, selectedFile: string | null) => {
     await dbConnect();
     const user = await currentUser();
     if (!user) throw new Error('User not authenticated');
@@ -46,5 +48,22 @@ export const createPostAction = async (inputText: string, selectedFile: string) 
         }
     } catch (error: any) {
         throw new Error(error);
+    }
+
+    revalidatePath('/')
+}
+
+
+// get all posts
+export const getAllPosts = async () => {
+    await dbConnect()
+
+    try {
+        const posts = await Post.find().sort({
+            createdAt: -1 // means most recent post will be shown at top
+        })
+        return JSON.parse(JSON.stringify(posts))
+    } catch (error) {
+        console.log(error)
     }
 }

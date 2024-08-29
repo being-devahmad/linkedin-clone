@@ -38,6 +38,7 @@ export function PostDialog({setOpen, open, src}: { setOpen: any, open: boolean, 
             await createPostAction(inputText, selectedFile);
             setOpen(false);
             setInputText('')
+            setSelectedFile(null)
         } catch (error) {
             console.error('Error occurred:', error);
         }
