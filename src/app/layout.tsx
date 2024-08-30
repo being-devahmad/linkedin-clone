@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { cn } from "@/lib/utils/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import React from "react";
+import {Toaster} from "@/components/ui/sonner";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
           <div className="md:bg-[#F4F2EE] flex-1 w-full">
             <main className="max-w-6xl mx-auto">
               {children}
+              <Toaster />
             </main>
           </div>
         </body>
