@@ -6,20 +6,21 @@ import {Input} from './ui/input'
 import {Button} from './ui/button'
 import {createCommentAction} from "@/lib/actions/comment";
 
-const CommentInput = ({postId}: { postId: string }) => {
+const CommentInput = ({postId}: { postId: any }) => {
     const {user} = useUser()
-    if (!user) throw new Error("User is not authenticated")
-
-    // const commentActionHandler = async (formData: FormData) => {
-    //     try {
-    //         await createCommentAction(postId, formData)
-    //     } catch (error) {
-    //
-    //     }
-    // }
+    const commentActionHandler = async (formData: FormData) => {
+        try {
+            if (!user) {
+                throw new Error("User is not authenticated")
+            }
+            await createCommentAction(postId, formData)
+        } catch (error) {
+            throw new Error("An error occurred")
+        }
+    }
 
     return (
-        <form action={''}>
+        <form action={(formData) => commentActionHandler(formData)}>
             <div className='flex items-center gap-2'>
                 <ProfilePhoto src={user?.imageUrl!}/>
                 <Input

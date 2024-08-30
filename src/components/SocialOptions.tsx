@@ -67,7 +67,7 @@ const SocialOptions = ({post}: { post: IPostDocument }) => {
                     (post.comments && post.comments.length > 0) && (
                         <p onClick={() => setCommentBoxOpen(!commentBoxOpen)}
                            className='text-xm text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer'>
-                            {post.comments.length} message
+                            {post.comments.length} comments
                         </p>
                     )}
             </div>
@@ -100,8 +100,6 @@ const SocialOptions = ({post}: { post: IPostDocument }) => {
             {
                 commentBoxOpen && (
                     <div className='p-4'>
-                        comment kr bhai
-
                         <CommentInput postId={post?._id}/>
                         <Comments post={post}/>
                     </div>

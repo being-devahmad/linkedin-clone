@@ -1,11 +1,12 @@
-import mongoose, { Document, Model } from "mongoose";
-import { IUser } from "./userModel";
-
+import mongoose, {Model} from "mongoose";
+import {Document} from "mongoose";
+import {IUser} from "@/lib/models/userModel";
 
 export interface IComment {
     textMessage: string,
     user: IUser
 }
+
 export interface ICommentDocument extends IComment, Document {
     createdAt: Date,
     updatedAt: Date
@@ -16,16 +17,24 @@ const commentSchema = new mongoose.Schema<ICommentDocument>({
         type: String,
         required: true
     },
-
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
-
-},
-    { timestamps: true }
-);
-
+        userId: {
+            type: String,
+            required: true
+        },
+        profilePhoto: {
+            type: String,
+            required: true
+        },
+        firstName: {
+            type: String,
+            required: true
+        },
+        lastName: {
+            type: String,
+            required: true
+        }
+    }
+}, {timestamps: true});
 export const Comment: Model<ICommentDocument> = mongoose.models?.Comment
     || mongoose.model("Comment", commentSchema);

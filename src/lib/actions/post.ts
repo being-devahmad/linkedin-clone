@@ -61,7 +61,15 @@ export const getAllPosts = async () => {
     try {
         const posts = await Post.find().sort({
             createdAt: -1 // means most recent post will be shown at top
+        }).populate({
+            path: "comments",
+            options: {
+                sort: {
+                    createdAt: -1
+                }
+            }
         })
+        if(!posts) return []
         return JSON.parse(JSON.stringify(posts))
     } catch (error) {
         console.log(error)
